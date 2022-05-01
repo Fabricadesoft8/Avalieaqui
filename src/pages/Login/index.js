@@ -40,8 +40,10 @@ export default function Login(){
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonRecover}>
+        <TouchableOpacity style={styles.buttonRecover}
+         onPress={ () => navigation.navigate('Recover')}>
           <Text style={styles.recoverPassword}>Esqueceu a senha?</Text>
+          
         </TouchableOpacity>
 
       </Animatable.View>

@@ -6,6 +6,7 @@ import Welcome from '../pages/Welcome';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Home from '../pages/Home';
+import Recover from '../pages/Recover';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ export default function Routes(){
         name="Home"
         component={Home}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+      name='Recover'
+      component={Recover}
+      options={{ headerShown: false}}
       />
     </Stack.Navigator>
 
