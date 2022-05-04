@@ -1,36 +1,57 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { 
   View,
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Button,
+  Alert
    } from 'react-native';
 
 import * as Animatable from 'react-native-animatable'
-
 import { useNavigation } from '@react-navigation/native'
 
-export default function Home(){
+export default function Perfil(){
   const navigation = useNavigation();
   return(
     <View style={styles.container}>
       <Animatable.View animation="fadeInLeft" delay={600} style={styles.containerHeader}>
-        <Text style={styles.massage}>Home</Text>
-      </Animatable.View>
-
-      
-        <TouchableOpacity style={styles.button}
-        onPress={ () => navigation.navigate('Perfil')}>
-          <Text style={styles.buttonText}>Editar Perfil</Text>
-          
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Criar conta</Text>
-        </TouchableOpacity>
+        <Text style={styles.massage}>Editar Perfil</Text>
+      </Animatable.View>           
         
-      
+        <Text style={styles.title}>Email</Text>
+        <TextInput
+        placeholder='Digite seu Email...'
+        style={styles.input}
+        />
+
+        <Text style={styles.title}>Senha</Text>
+        <TextInput
+        placeholder='Digite aqui sua senha...'
+        style={styles.input}
+        />
+
+        <Text style={styles.title}>Confirmar senha</Text>
+        <TextInput
+        placeholder='Confirma sua senha...'
+        style={styles.input}
+        />       
+        
+        
+           <TouchableOpacity 
+        style={styles.button}
+        onPress={ () => navigation.navigate('Home')}
+        >
+        <TouchableOpacity style={styles.button} 
+           onPress={() => Alert.alert('Perfil Alterado com Sucesso')}>
+             <Text style={styles.buttonText}>Editar Perfil</Text> 
+           </TouchableOpacity>
+           
+          <Text style={styles.buttonText}>Voltar</Text>
+        </TouchableOpacity>
+
 
     </View>
   );

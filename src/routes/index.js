@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Home from '../pages/Home';
 import Recover from '../pages/Recover';
+import Perfil from '../pages/Perfil';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,11 @@ export default function Routes(){
       <Stack.Screen
       name='Recover'
       component={Recover}
+      options={{ headerShown: false}}
+      />
+      <Stack.Screen
+      name='Perfil'
+      component={Perfil}
       options={{ headerShown: false}}
       />
     </Stack.Navigator>
