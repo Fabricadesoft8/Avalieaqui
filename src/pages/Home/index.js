@@ -23,7 +23,11 @@ export default function Home(){
         <TouchableOpacity style={styles.button}
         onPress={ () => navigation.navigate('Perfil')}>
           <Text style={styles.buttonText}>Editar Perfil</Text>
-          
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button}
+        onPress={ () => navigation.navigate('Recommendation')}>
+          <Text style={styles.buttonText}>Avalie a Secretaria</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}>
