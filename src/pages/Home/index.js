@@ -27,7 +27,7 @@ export default function Home(){
 
         <TouchableOpacity style={styles.button}
         onPress={ () => navigation.navigate('Recommendation')}>
-          <Text style={styles.buttonText}>Avalie a Secretaria</Text>
+          <Text style={styles.buttonText}>Chance de indicar</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}>
