@@ -8,7 +8,7 @@ import Register from '../pages/Register';
 import Home from '../pages/Home';
 import Recover from '../pages/Recover';
 import Perfil from '../pages/Perfil';
-import Recommendation from '../pages/Recommendation';
+import Avaliation from '../pages/Avaliation';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,8 +46,8 @@ export default function Routes(){
       options={{ headerShown: false}}
       />
       <Stack.Screen
-        name="Recommendation"
-        component={Recommendation}
+        name="Avaliation"
+        component={Avaliation}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

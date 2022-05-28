@@ -26,7 +26,7 @@ export default function Home(){
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}
-        onPress={ () => navigation.navigate('Recommendation')}>
+        onPress={ () => navigation.navigate('Avaliation')}>
           <Text style={styles.buttonText}>Chance de indicar</Text>
         </TouchableOpacity>
 

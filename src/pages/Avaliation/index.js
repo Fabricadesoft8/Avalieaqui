@@ -47,8 +47,8 @@ export default class App extends Component {
           rating={this.state.customStarCount0}
           selectedStar={rating => this.Indication(rating)}
           fullStarColor="yellow"
-          emptyStarColor="black"
-          halfStarEnabled
+          emptyStarColor="white"
+          halfStarEnabled 
           starPadding={10}
         />
         <Text style={styles.instructions}>
@@ -69,7 +69,7 @@ export default class App extends Component {
           rating={this.state.customStarCount1}
           selectedStar={rating => this.goBack(rating)}
           fullStarColor="yellow"
-          emptyStarColor="black"
+          emptyStarColor="white"
           halfStarEnabled
           starPadding={10}
         />
@@ -91,7 +91,7 @@ export default class App extends Component {
           rating={this.state.customStarCount2}
           selectedStar={rating => this.Satisfaction(rating)}
           fullStarColor="yellow"
-          emptyStarColor="black"
+          emptyStarColor="white"
           halfStarEnabled
           starPadding={10}
         />
@@ -105,7 +105,7 @@ export default class App extends Component {
         style={styles.textarea}
         onChangeText={this.onChange}
         defaultValue={this.state.text}
-        maxLength={200}
+        maxLength={500}
         placeholder={'Digite sua mensagem...'}
         placeholderTextColor={'#c7c7c7'}
         underlineColorAndroid={'transparent'}/>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
+    color:'#ffffff',
     margin: 10,
   },
   instructions: {
@@ -147,4 +147,53 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     opacity: 0,
   },
-});
+      container:{
+      flex:1,
+      backgroundColor: '#0d78af'
+    },
+    containerHeader:{
+      marginTop:'14%',
+      marginBottom:'8%',
+      paddingStart: '5%'
+    },
+    massage:{
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: '#ffffff'
+    },
+    containerForm:{
+      backgroundColor: '#ffffff',
+      flex:1,
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      paddingStart: '5%'
+    },
+    title:{
+      fontSize: 20,
+      marginTop: 28,
+      color: '#ffffff',
+      fontSize: 30,
+    },
+    input:{
+      borderBottomWidth:1,
+      height: 42,
+      marginBottom: 12,
+      fontSize: 16,
+    },
+    button:{
+      backgroundColor: '#ffffff',
+      width: '95%',
+      borderRadius: 5,
+      paddingVertical: 8,
+      marginTop: 14,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    buttonText:{
+      color:'#0d78af',
+      fontSize: 20,
+      fontWeight:'bold'
+      
+    }
+  })
+;
