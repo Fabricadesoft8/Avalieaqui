@@ -60,7 +60,7 @@ export default function Avaliation(){
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}
-          onPress={ () => navigation.navigate('Home')}>
+          onPress={ () => navigation.navigate('Secretary')}>
           <Text style={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
       </Animatable.View>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View,
   Text,
@@ -10,9 +10,12 @@ import {
 import * as Animatable from 'react-native-animatable'
 
 import { useNavigation } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function Login(){
   const navigation = useNavigation();
+  const [input, setInput] = useState('');
+  const [hidePass, setHidePass] = useState(true);
   return(
     <View style={styles.container}>
       <Animatable.View animation="fadeInLeft" delay={600} style={styles.containerHeader}>
@@ -24,19 +27,30 @@ export default function Login(){
         <Text style={styles.title}>Email</Text>
         <TextInput
         placeholder='Digite um email...'
-        style={styles.input}
+        style={styles.email}
         />
 
         <Text style={styles.title}>Senha</Text>
+        <View style={styles.inputArea}>
         <TextInput
         placeholder='Digite aqui sua senha...'
-        style={styles.input}
+        style={styles.password}
+        value={input}
+        onChangeText={(texto) => setInput(texto)}
+        secureTextEntry={hidePass}
         />
+        <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass)}>
+          {hidePass ?
+          <Ionicons name='eye' size={25}/>
+          :
+          <Ionicons name='eye-off' size={25}/>
+        }
+        </TouchableOpacity>
+        </View>
 
         <TouchableOpacity 
         style={styles.button}
-        onPress={ () => navigation.navigate('Home')}
-        >
+        onPress={ () => navigation.navigate('Home')}>
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
 
@@ -78,11 +92,31 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 28,
   },
-  input:{
+  inputArea:{
+    flexDirection: 'row',
+    borderBottomWidth:1,
+    width: '100%',
+    height: 42,
+    marginBottom: 12,
+    fontSize: 16,
+
+  },
+  email:{
     borderBottomWidth:1,
     height: 42,
     marginBottom: 12,
     fontSize: 16,
+  },
+  password:{
+    borderBottomWidth:1,
+    height: 42,
+    marginBottom: 12,
+    fontSize: 16,
+    width: '85%',
+  },
+  icon:{
+    width: '15%',
+    height: 50,
   },
   button:{
     backgroundColor: '#0d78af',

@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../services/api.js'
 
 import {
   SafeAreaView,
@@ -7,35 +8,43 @@ import {
   View,
   FlatList,
   TextInput,
+  TouchableOpacity
 } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native'
 
 const App = () => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [masterData, setMasterData] = useState([]);
+  const [entities, setEntities] = useState([{
+    _id: 0,
+    about: '...',
+    address: '',
+    assessments: [],
+    comments: [],
+    name: '',
+    open: '',
+    photos: ['']
+  }]);
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setFilteredData(responseJson);
-        setMasterData(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  useEffect(async () => {
+    await api.get('/entities').then(res => {
+      setEntities(res.data)
+    }).catch(error => console.log("Error:1 ", error));
+  });
+
 
   const searchFilter = (text) => {
     if (text) {
       const newData = masterData.filter(
         function (item) {
-          if (item.title) {
-            const itemData = item.title.toUpperCase();
+          if (item.name) {
+            const itemData = item.name.toUpperCase();
             const textData = text.toUpperCase();
             return itemData.indexOf(textData) > -1;
           }
-      });
+        });
       setFilteredData(newData);
       setSearch(text);
     } else {
@@ -44,25 +53,20 @@ const App = () => {
     }
   };
 
-  const ItemView = ({item}) => {
+  const ItemView = ({ item }) => {
     return (
       <Text
         style={styles.itemStyle}
         onPress={() => getItem(item)}>
-        {item.id}
-        {' - '}
-        {item.title.toUpperCase()}
+        {item.name.toUpperCase()}
       </Text>
     );
   };
 
-  const getItem = (item) => {
-    alert('Id : ' + item.id + '\n\nTarefa : ' + item.title + '\n\nCompletada: ' + item.completed);
-  };
-
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+
         <TextInput
           style={styles.textInputStyle}
           onChangeText={(text) => searchFilter(text)}
@@ -70,6 +74,23 @@ const App = () => {
           underlineColorAndroid="transparent"
           placeholder="Procure Aqui"
         />
+
+        {entities.map((item, index) => {
+          const navigation = useNavigation();
+          return (
+            <TouchableOpacity style={styles.button}
+            onPress={ () => navigation.navigate('Secretary')}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >{item.name}</Text>
+            </TouchableOpacity>
+          )
+        })}
+
         <FlatList
           data={filteredData}
           keyExtractor={item => item.id}
@@ -86,18 +107,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   itemStyle: {
-    backgroundColor: '#0066CC',
+    backgroundColor: '#0d78af',
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 10,
     color: 'white',
+  },
+  button:{
+    backgroundColor: '#0d78af',
+    width: '90%',
+    borderRadius: 5,
+    paddingVertical: 8,
+    marginTop: 14,
+    marginLeft: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textInputStyle: {
     height: 40,
     borderWidth: 1,
     paddingLeft: 20,
     margin: 5,
-    borderColor: '#0066CC',
+    borderColor: '#0d78af',
   },
 });
 

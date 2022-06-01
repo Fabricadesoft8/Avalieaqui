@@ -10,6 +10,8 @@ import Home from '../pages/Home';
 import Recover from '../pages/Recover';
 import Perfil from '../pages/Perfil';
 import Avaliation from '../pages/Avaliation';
+import Secretary from '../pages/Secretary';
+import About from '../pages/About';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +51,16 @@ export default function Routes(){
       <Stack.Screen
         name="Avaliation"
         component={Avaliation}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Secretary"
+        component={Secretary}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="About"
+        component={About}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
