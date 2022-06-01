@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TextInput,
+  Alert,
   TouchableOpacity
    } from 'react-native';
 
@@ -47,7 +48,8 @@ export default function Register(){
         style={styles.input}
         />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+          onPress={() => Alert.alert('Conta criada com sucesso!')}>
           <Text style={styles.buttonText}>Criar conta</Text>
         </TouchableOpacity>
 

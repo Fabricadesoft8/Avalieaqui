@@ -1,89 +1,104 @@
-import React from 'react';
-import { 
-  View,
+import React, {useState, useEffect} from 'react';
+
+import {
+  SafeAreaView,
   Text,
   StyleSheet,
+  View,
+  FlatList,
   TextInput,
-  TouchableOpacity
-   } from 'react-native';
+} from 'react-native';
 
-import * as Animatable from 'react-native-animatable'
+const App = () => {
+  const [search, setSearch] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [masterData, setMasterData] = useState([]);
 
-import { useNavigation } from '@react-navigation/native'
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setFilteredData(responseJson);
+        setMasterData(responseJson);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
-export default function Home(){
-  const navigation = useNavigation();
-  return(
-    <View style={styles.container}>
-      <Animatable.View animation="fadeInLeft" delay={600} style={styles.containerHeader}>
-        <Text style={styles.massage}>Home</Text>
-      </Animatable.View>
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = masterData.filter(
+        function (item) {
+          if (item.title) {
+            const itemData = item.title.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+          }
+      });
+      setFilteredData(newData);
+      setSearch(text);
+    } else {
+      setFilteredData(masterData);
+      setSearch(text);
+    }
+  };
 
-      
-        <TouchableOpacity style={styles.button}
-        onPress={ () => navigation.navigate('Perfil')}>
-          <Text style={styles.buttonText}>Editar Perfil</Text>
-        </TouchableOpacity>
+  const ItemView = ({item}) => {
+    return (
+      <Text
+        style={styles.itemStyle}
+        onPress={() => getItem(item)}>
+        {item.id}
+        {' - '}
+        {item.title.toUpperCase()}
+      </Text>
+    );
+  };
 
-        <TouchableOpacity style={styles.button}
-        onPress={ () => navigation.navigate('Avaliation')}>
-          <Text style={styles.buttonText}>Chance de indicar</Text>
-        </TouchableOpacity>
+  const getItem = (item) => {
+    alert('Id : ' + item.id + '\n\nTarefa : ' + item.title + '\n\nCompletada: ' + item.completed);
+  };
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Criar conta</Text>
-        </TouchableOpacity>
-        
-      
-
-    </View>
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.textInputStyle}
+          onChangeText={(text) => searchFilter(text)}
+          value={search}
+          underlineColorAndroid="transparent"
+          placeholder="Procure Aqui"
+        />
+        <FlatList
+          data={filteredData}
+          keyExtractor={item => item.id}
+          renderItem={ItemView}
+        />
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor: '#0d78af'
+  container: {
+    paddingTop: 40,
+    backgroundColor: 'white',
   },
-  containerHeader:{
-    marginTop:'14%',
-    marginBottom:'8%',
-    paddingStart: '5%'
+  itemStyle: {
+    backgroundColor: '#0066CC',
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 10,
+    color: 'white',
   },
-  massage:{
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#ffffff'
+  textInputStyle: {
+    height: 40,
+    borderWidth: 1,
+    paddingLeft: 20,
+    margin: 5,
+    borderColor: '#0066CC',
   },
-  containerForm:{
-    backgroundColor: '#ffffff',
-    flex:1,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingStart: '5%'
-  },
-  title:{
-    fontSize: 20,
-    marginTop: 28,
-  },
-  input:{
-    borderBottomWidth:1,
-    height: 42,
-    marginBottom: 12,
-    fontSize: 16,
-  },
-  button:{
-    backgroundColor: '#0d78af',
-    width: '95%',
-    borderRadius: 5,
-    paddingVertical: 8,
-    marginTop: 14,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  buttonText:{
-    color:'#ffffff',
-    fontSize: 18,
-    fontWeight:'bold'
-  }
-})
+});
+
+export default App;
