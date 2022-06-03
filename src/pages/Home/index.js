@@ -8,25 +8,22 @@ import {
   View,
   FlatList,
   TextInput,
+  Image,
   TouchableOpacity
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native'
+import * as Animatable from 'react-native-animatable'
 
-const App = () => {
+import { useNavigation } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
+import { Icon } from '@material-ui/core';
+
+export default function Home({route}){
   const [search, setSearch] = useState('');
+  const [username, setUsername] = useState(route.params.user || "")
   const [filteredData, setFilteredData] = useState([]);
   const [masterData, setMasterData] = useState([]);
-  const [entities, setEntities] = useState([{
-    _id: 0,
-    about: '...',
-    address: '',
-    assessments: [],
-    comments: [],
-    name: '',
-    open: '',
-    photos: ['']
-  }]);
+  const [entities, setEntities] = useState([{}]);
 
   useEffect(async () => {
     await api.get('/entities').then(res => {
@@ -62,24 +59,35 @@ const App = () => {
       </Text>
     );
   };
-
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.buttonLogin}
+        onPress={() => navigation.navigate('Login')}>
+          <Image
+          source={require('../../assets/icons8-logout-24.png')}
+          />
+      </TouchableOpacity>
+      <Animatable.View animation="fadeInLeft" delay={600} style={styles.containerHeader}>
+        <Text style={styles.massage}>Secretarias:</Text>
+      </Animatable.View>
 
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={(text) => searchFilter(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-          placeholder="Procure Aqui"
+      <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+        <Animatable.Image
+          source={require('../../assets/Vitoria-de-Santo-Antão-Logo-1.jpg')}
+          style={{ width: '105%', height: '40%', borderTopLeftRadius: 25,
+          borderTopRightRadius: 25, marginLeft:-20, marginTop: -21}}
+          resizeMode="contain"
         />
 
         {entities.map((item, index) => {
           const navigation = useNavigation();
           return (
+            
             <TouchableOpacity style={styles.button}
-            onPress={ () => navigation.navigate('Secretary')}>
+            onPress={ () => navigation.navigate('Secretary',{item: item, user: username})}>
             <Text
               style={{
                 color: "#ffffff",
@@ -88,6 +96,7 @@ const App = () => {
               }}
             >{item.name}</Text>
             </TouchableOpacity>
+
           )
         })}
 
@@ -96,15 +105,35 @@ const App = () => {
           keyExtractor={item => item.id}
           renderItem={ItemView}
         />
+        </Animatable.View>
       </View>
     </SafeAreaView>
+    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
-    backgroundColor: 'white',
+    flex: 1,
+    backgroundColor: '#0d78af'
+  },
+  containerHeader: {
+    marginTop: '14%',
+    marginBottom: '8%',
+    paddingStart: '5%'
+  },
+  massage: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginTop: -40,
+  },
+  containerForm: {
+    backgroundColor: '#ffffff',
+    flex: 1,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingStart: '5%'
   },
   itemStyle: {
     backgroundColor: '#0d78af',
@@ -113,13 +142,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     color: 'white',
   },
+
   button:{
     backgroundColor: '#0d78af',
     width: '90%',
     borderRadius: 5,
     paddingVertical: 8,
     marginTop: 14,
-    marginLeft: 20,
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonLogin:{
+    backgroundColor: '#0d78af',
+    width: '15%',
+    borderRadius: 5,
+    paddingVertical: 8,
+    marginTop: 30,
+    marginLeft: 305,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -131,5 +171,3 @@ const styles = StyleSheet.create({
     borderColor: '#0d78af',
   },
 });
-
-export default App;

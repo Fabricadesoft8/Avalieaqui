@@ -24,7 +24,7 @@ export default function About(){
 
         <TouchableOpacity 
         style={styles.button}
-        onPress={ () => navigation.navigate('Secretary')}>
+        onPress={ () => navigation.navigate('Home')}>
           <Text style={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
 

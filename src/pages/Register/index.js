@@ -1,23 +1,40 @@
 import React, { useState } from 'react';
-import { 
+import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Alert,
   TouchableOpacity
-   } from 'react-native';
+} from 'react-native';
 
 import * as Animatable from 'react-native-animatable'
 
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
+import api from '../../services/api'
 
-export default function Register(){
+export default function Register() {
   const navigation = useNavigation();
-  const [input, setInput] = useState('');
+  const [name, setName] = useState('');
+  const [cpf, setCPF] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setpasswordConfirmation] = useState('');
   const [hidePass, setHidePass] = useState(true);
-  return(
+
+  async function Registro(name, cpf, email, password, passwordConfirmation) {
+    console.log(email, password)
+    const response = await api.post('/signup', { name, cpf, email, password, passwordConfirmation }).then(res => {
+      if (res.statusCode == 200) {
+        Alert.alert('Conta criada com sucesso!')
+      }
+    }).catch(error => {
+      Alert.alert("Erro ao criar usuário")
+    });
+  }
+
+  return (
     <View style={styles.container}>
       <Animatable.View animation="fadeInLeft" delay={600} style={styles.containerHeader}>
         <Text style={styles.massage}>Crie aqui sua conta</Text>
@@ -26,60 +43,68 @@ export default function Register(){
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         <Text style={styles.title}>Nome</Text>
         <TextInput
-        placeholder='Digite seu nome completo...'
-        style={styles.input}
+          placeholder='Digite seu nome completo...'
+          style={styles.name}
+          value={name}
+          onChangeText={(texto) => setName(texto)}
         />
 
         <Text style={styles.title}>CPF</Text>
         <TextInput
-        placeholder='Digite seu CPF...'
-        style={styles.input}
+          placeholder='Digite seu CPF...'
+          style={styles.cpf}
+          value={cpf}
+          onChangeText={(texto) => setCPF(texto)}
         />
-        
+
         <Text style={styles.title}>Email</Text>
         <TextInput
-        placeholder='Digite seu Email...'
-        style={styles.input}
+          placeholder='Digite seu Email...'
+          style={styles.email}
+          value={email}
+          onChangeText={(texto) => setEmail(texto)}
         />
 
         <Text style={styles.title}>Senha</Text>
         <View style={styles.inputArea}>
-        <TextInput
-        placeholder='Digite aqui sua senha...'
-        style={styles.password}
-        value={input}
-        onChangeText={(texto) => setInput(texto)}
-        secureTextEntry={hidePass}
-        />
-        <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass)}>
-          {hidePass ?
-          <Ionicons name='eye' size={25}/>
-          :
-          <Ionicons name='eye-off' size={25}/>
-        }
-        </TouchableOpacity>
+          <TextInput
+            placeholder='Digite aqui sua senha...'
+            style={styles.password}
+            value={password}
+            onChangeText={(texto) => setPassword(texto)}
+            secureTextEntry={hidePass}
+          />
+          <TouchableOpacity style={styles.icon} onPress={() => setHidePass(!hidePass)}>
+            {hidePass ?
+              <Ionicons name='eye' size={25} />
+              :
+              <Ionicons name='eye-off' size={25} />
+            }
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.title}>Confirme a Senha</Text>
         <View style={styles.inputArea}>
-        <TextInput
-        placeholder='Digite sua senha novamente...'
-        style={styles.password}
-        value={input}
-        onChangeText={(texto) => setInput(texto)}
-        secureTextEntry={hidePass}
-        />
-        <TouchableOpacity style={styles.icon} onPress={ () => setHidePass(!hidePass)}>
-          {hidePass ?
-          <Ionicons name='eye' size={25}/>
-          :
-          <Ionicons name='eye-off' size={25}/>
-        }
-        </TouchableOpacity>
+          <TextInput
+            placeholder='Digite sua senha novamente...'
+            style={styles.password}
+            value={passwordConfirmation}
+            onChangeText={(texto) => setpasswordConfirmation(texto)}
+            secureTextEntry={hidePass}
+          />
+          <TouchableOpacity style={styles.icon} onPress={() => setHidePass(!hidePass)}>
+            {hidePass ?
+              <Ionicons name='eye' size={25} />
+              :
+              <Ionicons name='eye-off' size={25} />
+            }
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.button}
-          onPress={() => Alert.alert('Conta criada com sucesso!')}>
+          onPress={() => {
+            Registro(name, cpf, email, password, passwordConfirmation)
+          }}>
           <Text style={styles.buttonText}>Criar conta</Text>
         </TouchableOpacity>
 
@@ -90,58 +115,70 @@ export default function Register(){
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
+  container: {
+    flex: 1,
     backgroundColor: '#0d78af'
   },
-  containerHeader:{
-    marginTop:'14%',
-    marginBottom:'8%',
+  containerHeader: {
+    marginTop: '14%',
+    marginBottom: '8%',
     paddingStart: '5%'
   },
-  massage:{
+  massage: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#ffffff'
   },
-  containerForm:{
+  containerForm: {
     backgroundColor: '#ffffff',
-    flex:1,
+    flex: 1,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: '5%'
   },
-  title:{
+  title: {
     fontSize: 20,
     marginTop: 28,
   },
-  inputArea:{
+  inputArea: {
     flexDirection: 'row',
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
     width: '100%',
     height: 42,
     marginBottom: 12,
     fontSize: 16,
 
   },
-  password:{
-    borderBottomWidth:1,
+  password: {
+    borderBottomWidth: 1,
     height: 42,
     marginBottom: 12,
     fontSize: 16,
     width: '85%',
   },
-  icon:{
+  icon: {
     width: '15%',
     height: 50,
   },
-  input:{
-    borderBottomWidth:1,
+  name: {
+    borderBottomWidth: 1,
     height: 42,
     marginBottom: 12,
     fontSize: 16,
   },
-  button:{
+  cpf: {
+    borderBottomWidth: 1,
+    height: 42,
+    marginBottom: 12,
+    fontSize: 16,
+  },
+  email: {
+    borderBottomWidth: 1,
+    height: 42,
+    marginBottom: 12,
+    fontSize: 16,
+  },
+  button: {
     backgroundColor: '#0d78af',
     width: '95%',
     borderRadius: 5,
@@ -150,9 +187,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  buttonText:{
-    color:'#ffffff',
+  buttonText: {
+    color: '#ffffff',
     fontSize: 18,
-    fontWeight:'bold'
+    fontWeight: 'bold'
   }
 })

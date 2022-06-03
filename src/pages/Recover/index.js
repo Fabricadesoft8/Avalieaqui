@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View,
   Text,
@@ -12,6 +12,14 @@ import {
    import * as Animatable from 'react-native-animatable'
 
    export default function Recover(){
+    const[email, setEmail] = useState('');
+
+    async function RecuperarSenha(email){
+      console.log(email)
+      await api.post('/login', {email}).then(res => {
+        console.log(res)
+      }).catch(error => console.log("Error:1 ", error));
+    }
      return(
        <View style={styles.container}>
          <Animatable.View animation="fadeInLeft" delay={600} style={styles.containerHeader}>
@@ -23,6 +31,8 @@ import {
            <TextInput
            placeholder='Digite seu Email...'
            style={styles.input}
+           value={email}
+            onChangeText={(texto) => setEmail(texto)}
            />
            <TouchableOpacity style={styles.button} 
            onPress={() => Alert.alert('E-mail Enviado!')}>
